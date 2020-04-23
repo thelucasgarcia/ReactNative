@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import AccordionObject from '../../components/accordionObject';
-import {View, Text, Button} from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import Styles from './styles';
 
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import House from '../house';
 
-import {obterPorIdUsuario, obterPesquisa} from '../../services/imovelService';
+import { obterPorIdUsuario, obterPesquisa } from '../../services/imovelService';
 
-function HouseList({navigation}) {
+function HouseList({ navigation }) {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const imovelState = useSelector(state => state.imovel);
@@ -25,9 +25,10 @@ function HouseList({navigation}) {
       await obterPorIdUsuario(auth.usuario.idUsuario)
         .then(res => {
           setImovelList(res);
-          console.tron.log(res);
+          console.log(res);
         })
         .catch(err => {
+          setImovelList([]);
           console.tron.log(err);
         });
     } else {
@@ -37,11 +38,16 @@ function HouseList({navigation}) {
           console.tron.log(res);
         })
         .catch(err => {
+          setImovelList([]);
           console.tron.log(err);
         });
     }
-    dispatch({type: 'SET_NAVEGACAO_FINALIZAR'});
+    dispatch({ type: 'SET_NAVEGACAO_FINALIZAR' });
   }
+
+  useEffect(() => {
+    lerImoveis();
+  }, [parametro]);
 
   useEffect(() => {
     lerImoveis();
@@ -63,9 +69,10 @@ function HouseList({navigation}) {
             Resultados da Pesquisa
           </Text>
         ) : null}
-        {imovelList.map(imovel => {
+        {imovelList.map((imovel, index) => {
           return (
             <AccordionObject
+              key={index}
               title={
                 'Descrição:' +
                 imovel.DescricaoImovel +

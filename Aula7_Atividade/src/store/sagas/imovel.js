@@ -154,9 +154,12 @@ export function* manterImovel(action) {
         action.house.descricaoImovel,
       );
 
+
+      console.log('tipo', retorno.tipo);
+
       if (
         retorno.tipo === 1 &&
-        retorno.house.idImovel !== action.house.idImovel
+        retorno.imovel.idImovel !== action.house.idImovel
       ) {
         yield apresentarMensagem(1, action.house, 'Imóvel já existente');
         return;
